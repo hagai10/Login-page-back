@@ -58,7 +58,10 @@ public class loginController {
         if(name!=null && !name.isEmpty()){
             if(pass!=null && !pass.isEmpty()){
                 User user = getUser(name,pass);
-                if(user!=null){basicResponse.setSuccess(true); }
+                if(user!=null){
+                    basicResponse.setSuccess(true);
+                    basicResponse.setUser(user);
+                }
                 else{basicResponse.setErrorCode(LOGIN_IS_WRONG);}
             }
             else {basicResponse.setErrorCode(ERROR_CODE_MISSING_PASSWORD);}}
@@ -84,6 +87,7 @@ public class loginController {
             if(user.addNote(text)) {
                 user.addNote(text);
                 basicResponse.setSuccess(true);
+                basicResponse.setUser(user);
             }else{basicResponse.setErrorCode(THERE_IS_SUCH_NOTE);}
         } else basicResponse.setErrorCode(DONT_FIND_USER);
         return basicResponse;
