@@ -11,13 +11,14 @@ java {
 	sourceCompatibility = '17'
 }
 
-repositories {
+repositories{
 	mavenCentral()
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.27' // Use the appropriate version
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

@@ -13,20 +13,16 @@ public class User {
         this.notes = new ArrayList<>();
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUserName() {return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserName(String userName) {this.userName = userName;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPassword() {return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String password) {this.password = password;
     }
 
     public boolean isSameUser(String userName, String password){
