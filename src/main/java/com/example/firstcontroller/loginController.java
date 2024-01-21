@@ -32,10 +32,11 @@ public class loginController {
         if(name!=null && !name.isEmpty()){
             if(pass!=null && !pass.isEmpty()){
                 if(pass.equals(pass2)){
-                if(this.isStrongPassword(pass)){
+                 if(this.isStrongPassword(pass)){
                     if(!this.nameExists(name)){
                         this.Users.add(new User(name, pass));
-                        basicResponse.setSuccess(true);}
+                        basicResponse.setSuccess(true);
+                    }
                     else {basicResponse.setErrorCode(USER_NAME_EXISTS);}}
                       else {basicResponse.setErrorCode(ERROR_CODE_WEEK_PASSWORD);}}
                        else  {basicResponse.setErrorCode(ERROR_CODE_PASSWORDS_NOT_EQUALS);}}
@@ -62,7 +63,7 @@ public class loginController {
     }
     @RequestMapping(value = "get-all-users")
     public List<User> getAllUsers(){
-        return Users;
+        return dbConnection.getUsers();
     }
 
     @RequestMapping(value = "login" , method = {RequestMethod.POST})
@@ -74,9 +75,9 @@ public class loginController {
                 if(user!=null){
                     basicResponse.setSuccess(true);
                     basicResponse.setUser(user);
+                    System.out.println("Hallo"+user.getUserName());
                 }
-                else{basicResponse.setErrorCode(LOGIN_IS_WRONG);}
-            }
+                else{basicResponse.setErrorCode(LOGIN_IS_WRONG);}}
             else {basicResponse.setErrorCode(ERROR_CODE_MISSING_PASSWORD);}}
         else basicResponse.setErrorCode(ERROR_CODE_MISSING_USER_NAME);
         return basicResponse;
@@ -114,6 +115,11 @@ public class loginController {
             }
         }
         return user;
+    }
+    @RequestMapping(value = "add-user")
+    public boolean addUser(String name , String pass){
+        User userToAdd = new User (name,pass);
+       return dbConnection.insertUser(userToAdd);
     }
 
 }
