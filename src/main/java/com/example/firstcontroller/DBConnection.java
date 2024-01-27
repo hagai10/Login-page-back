@@ -14,7 +14,7 @@ import java.util.List;
 public class DBConnection {
 
     private Connection connection;
-    private List<User> Users = new ArrayList<>();
+    private List<Client> Clients = new ArrayList<>();
 
     @PostConstruct
      public void init(){
@@ -22,12 +22,12 @@ public class DBConnection {
 
     }
 
-    public List<User> getUsers() {
-        return Users;
+    public List<Client> getClients() {
+        return Clients;
     }
 
-    public void setUsers(List<User> users) {
-        Users = users;
+    public void setClients(List<Client> clients) {
+        Clients = clients;
     }
 
     private void createDBConnection(String username , String password)  {
@@ -41,18 +41,33 @@ public class DBConnection {
             System.err.println("Failed to connect to database");
         }
     }
-    public boolean insertUser(User user){
+    public boolean insertUser(Client client){
         boolean success = false;
         try{
-            if(this.checkIfUserAvailable(user.getUserName())){
+            if(this.checkIfUserAvailable(client.getUserName())){
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users(username , password) VALUES (?,?)");
-            preparedStatement.setString(1,user.getUserName());
-            preparedStatement.setString(2 ,user.getPassword());
+            preparedStatement.setString(1,client.getUserName());
+            preparedStatement.setString(2 ,client.getPassword());
             preparedStatement.executeUpdate();
             success =true;
-            Users = new ArrayList<>();
+            Clients = new ArrayList<>();
             this.newList();
             }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return success;
+    }
+    public boolean insertProduct(product product){
+        boolean success = false;
+        try{
+            if(this.checkIfProductExists(product.getDescription())){
+                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO products(description,price,count) VALUES (?,?,?)");
+                preparedStatement.setString(1,product.getDescription());
+                preparedStatement.setFloat(2 , product.getPrice());
+                preparedStatement.setInt(3 , product.getCount());
+                preparedStatement.executeUpdate();
+                success =true;}
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -72,6 +87,20 @@ public class DBConnection {
         }
         return available;
     }
+    public boolean checkIfProductExists(String description){
+        boolean exists =true;
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT description FROM products WHERE description=?");
+            preparedStatement.setString(1, description);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                exists=false;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return exists;
+    }
     public boolean checkCredentials(String username, String password){
         boolean ok = false;
         try{
@@ -89,13 +118,14 @@ public class DBConnection {
     }
     private void newList(){
         try{
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT username,password FROM users");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT username,password,id FROM users");
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()){
             String nameFromDb = resultSet.getString(1);
             String passwordFromDb = resultSet.getString(2);
-            User user = new User (nameFromDb,passwordFromDb);
-            Users.add(user);
+            int idFromDb = resultSet.getInt(3);
+            Client client = new Client (nameFromDb,passwordFromDb,idFromDb);
+            Clients.add(client);
         }}
         catch (Exception e){
             e.printStackTrace();

@@ -12,7 +12,6 @@ public class User {
         this.password = pass;
         this.notes = new ArrayList<>();
     }
-
     public String getUserName() {return userName;
     }
 

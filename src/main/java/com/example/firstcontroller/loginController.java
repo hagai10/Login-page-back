@@ -1,6 +1,5 @@
 package com.example.firstcontroller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,18 +12,8 @@ import static com.example.firstcontroller.Errors.*;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class loginController {
-    @Autowired
-    private DBConnection dbConnection;
-    private List<User> Users = new ArrayList<>();
 
-    @RequestMapping(value = "check-username")
-    public boolean checkUsername(String username){
-        return dbConnection.checkIfUserAvailable(username);
-    }
-    @RequestMapping(value = "login-account")
-    public boolean logIn(String username ,String password){
-        return dbConnection.checkCredentials(username,password);
-    }
+    private List<User> Users = new ArrayList<>();
 
     @RequestMapping(value = "create-account", method = {RequestMethod.POST})
     public basicResponse createAccount(String name, String pass,String pass2) {
@@ -63,7 +52,7 @@ public class loginController {
     }
     @RequestMapping(value = "get-all-users")
     public List<User> getAllUsers(){
-        return dbConnection.getUsers();
+        return this.Users;
     }
 
     @RequestMapping(value = "login" , method = {RequestMethod.POST})
@@ -75,7 +64,7 @@ public class loginController {
                 if(user!=null){
                     basicResponse.setSuccess(true);
                     basicResponse.setUser(user);
-                    System.out.println("Hallo"+user.getUserName());
+                    System.out.println("Hallo "+user.getUserName());
                 }
                 else{basicResponse.setErrorCode(LOGIN_IS_WRONG);}}
             else {basicResponse.setErrorCode(ERROR_CODE_MISSING_PASSWORD);}}
@@ -115,11 +104,6 @@ public class loginController {
             }
         }
         return user;
-    }
-    @RequestMapping(value = "add-user")
-    public boolean addUser(String name , String pass){
-        User userToAdd = new User (name,pass);
-       return dbConnection.insertUser(userToAdd);
     }
 
 }
