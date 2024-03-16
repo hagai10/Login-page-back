@@ -35,25 +35,28 @@ import java.util.List;
                 if (onlyValidPhone && !onlyValidEmail) {
                     if (client.getPhone().length() > 9 && client.getPhone().charAt(0) == '0'){
                         returnList.add(client);
-                        System.out.println("Hallo "+client.getName());
+                        System.out.println("Hello "+client.getName());
                     }
                 }
                 if (onlyValidEmail && !onlyValidPhone) {
                     if (client.getEmail().contains("@")) {
                         returnList.add(client);
-                        System.out.println("Hallo "+client.getName());
+                        System.out.println("Hello "+client.getName());
                     }
                 }
                 if (onlyValidEmail && onlyValidPhone) {
                     if (client.getEmail().contains("@") && client.getPhone().length() > 9 && client.getPhone().charAt(0) == '0'){
                         returnList.add(client);
-                        System.out.println("Hallo "+client.getName());
+                        System.out.println("Hello "+client.getName());
                     }
                 }
             }
             if (returnList.isEmpty()) returnList = clients;
             return returnList;
         }
+
+
+
     }
 
 

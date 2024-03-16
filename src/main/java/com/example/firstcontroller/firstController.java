@@ -11,14 +11,14 @@ import java.util.Random;
 
 @RestController
 public class firstController {
-    @RequestMapping(value = "hallo")
+    @RequestMapping(value = "hello")
     public Object Hallo(){
-        return "Hallo I'm your server";
+        return "Hello I'm your server";
     }
 
     @RequestMapping(value = "random")
     public Object Random(){
-        return "Hallo your number is "+new Random().nextInt(50);
+        return "Hello your number is "+new Random().nextInt(50);
     }
 
     @RequestMapping(value = "player")
